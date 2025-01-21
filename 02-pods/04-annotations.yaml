@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: annotations
+  labels:
+    course: DevOps
+    duration: 3months
+    Trainer: "SivakumarReddy"
+# usually for external resouces annotaitons are used.
+  annotations:
+    com.roboshop.training.duration: "120 hours"
+    jenkins.url: "https://jenkins.roboshop.com/roboshop/catalogue#45"
+spec:
+# containers is a list of containers
+  containers:
+  - name: hello-pod
+    image: nginx:1.14.2
+    ports:
+    - containerPort: 80
