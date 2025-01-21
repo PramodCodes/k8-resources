@@ -5,7 +5,7 @@ metadata:
   labels:
     course: DevOps
     duration: 3months
-    Trainer: "Sivakumar Reddy"
+    Trainer: "SivakumarReddy"
 spec:
 # containers is a list of containers
   containers:
