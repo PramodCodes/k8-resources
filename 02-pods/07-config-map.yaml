@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: devops-config
+
+data:
+  # property-like keys; each key maps to a simple value   # file-like keys
+  course: DevOps
+  trainer: "SivakumarReddy"
+
