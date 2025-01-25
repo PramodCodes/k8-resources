@@ -16,9 +16,9 @@ spec:
     - containerPort: 80
 ---
 # pod is created up, to what should be the service attatched to ? below is the service definition
-# for the above [pd]
+# for the above pod
 apiVersion: v1
-kind: service
+kind: Service
 metadata:
   name: nginx-service
 # what should the service be attached to ? labels must be unique otherwise it will be attached to the wrong pod
