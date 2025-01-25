@@ -7,6 +7,6 @@ spec:
 # containers is a list of containers
   containers:
   - name: hello-pod
-    image: nginx:1.14.2
+    image: nginx
     ports:
     - containerPort: 80
