@@ -2,7 +2,6 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: filebeat-config
-  namespace: kube-system
   labels:
     k8s-app: filebeat
 data:
@@ -13,7 +12,8 @@ data:
           path: /usr/share/filebeat/modules.d/*.yml
           reload:
             enabled: true
-      modules: # we are specifying where should it get the logs from, filebeat already has a module for nginx
+      # we are specifying where should it get the logs from, filebeat already has a module for nginx
+      modules:
       - module: nginx
         access:
           var.paths: ["/var/log/nginx/access.log*"]
@@ -49,24 +49,27 @@ spec:
         - containerPort: 80
         # mounting volume to the container
         volumeMounts:
-        - name: nginx-logs # name must match the volume name
+        # name must match the volume name
+        - name: nginx-logs
           mountPath: /var/log/nginx
+          
       - name: filebeat-sidecar
         image: docker.elastic.co/beats/filebeat:7.17.3
         # image: docker.elastic.co/filebeat/filebeat:7.6.2
         volumeMounts:
         - name: nginx-logs # name must match the volume name
           mountPath: /var/log/nginx
+          
         - name: filebeat-config # name must match the volume name
           mountPath: /usr/share/filebeat/filebeat.yml # we are mounting the filebeat.yml to the container
           subPath: filebeat.yml
-          
-    volumes: # we are mounting the emptyDir volume to the container, we are telling kubernetes that we are storing some data in this
-    - name: nginx-logs
-      emptyDir: {}
-    - name: filebeat-config
-      configMap:
-        name: filebeat-config
-        items:
-        - key: filebeat.yml
-          path: filebeat.yml
+    # we are mounting the emptyDir volume to the container, we are telling kubernetes that we are storing some data in this
+      volumes:
+      - name: nginx-logs
+        emptyDir: {}
+      - name: filebeat-config
+        configMap:
+          name: filebeat-config
+          items:
+          - key: filebeat.yml
+            path: filebeat.yml
