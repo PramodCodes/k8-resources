@@ -3,22 +3,21 @@ kind: PersistentVolume
 metadata:
   name: ebs-static
 spec:
-# This is ReadWriteOnce because its a HD , A HD cannot connect with multiple resources at the same time
   accessModes:
-  - ReadWriteOnce
+  - ReadWriteOnce #EBS volume should have readwriteonce, because it HD.
   capacity:
-    storage: 10Gi
+    storage: 100Gi
   csi:
     driver: ebs.csi.aws.com
     fsType: ext4
-    volumeHandle: vol-078e5feec8be16cbc
+    volumeHandle: vol-095b046ae862ee1ff
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: ebs-static
 spec:
-  storageClassName: "" # Empty string must be explicitly set otherwise default StorageClass will be set, for static provisioning this is empty
+  storageClassName: "" # Empty string must be explicitly set otherwise default StorageClass will be set. for static provisioning this is empty
   volumeName: ebs-static
   accessModes:
     - ReadWriteOnce
@@ -26,7 +25,6 @@ spec:
     requests:
       storage: 5Gi
 ---
-# i need to attatch with pod the pv 
 apiVersion: v1
 kind: Pod
 metadata:
@@ -41,7 +39,7 @@ spec:
     - name: nginx-data
       mountPath: /usr/share/nginx/html
   nodeSelector:
-    zone: 1f # because we labeled our instances as 1f (since they are in 1f zone) and we want to deploy our pod in the same zone, if not volume will not be mounted because its in different zone
+    zone: 1b
   volumes:
   - name: nginx-data
     persistentVolumeClaim:
